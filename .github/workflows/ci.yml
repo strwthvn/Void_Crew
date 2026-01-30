@@ -13,6 +13,16 @@ jobs:
       - name: Run clang-format
         run: find src -name '*.cpp' -o -name '*.hpp' | xargs clang-format --dry-run --Werror
 
+  tidy:
+    runs-on: ubuntu-latest
+    name: clang-tidy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Generate compile_commands.json
+        run: cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_C_COMPILER=clang-17 -DCMAKE_CXX_COMPILER=clang++-17
+      - name: Run clang-tidy
+        run: find src -name '*.cpp' | xargs clang-tidy -p build
+
   build:
     strategy:
       fail-fast: false
