@@ -11,7 +11,7 @@
     "glm",
     "imgui",
     "joltphysics",
-    "libcurl",
+    "curl",
     "lz4",
     "miniaudio",
     "nlohmann-json",

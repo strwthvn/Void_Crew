@@ -1,3 +1,5 @@
+find_package(EnTT CONFIG REQUIRED)
+
 add_library(common STATIC
     version.cpp
     version.hpp
@@ -6,3 +8,5 @@ add_library(common STATIC
 target_include_directories(common PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+target_link_libraries(common PUBLIC EnTT::EnTT)
