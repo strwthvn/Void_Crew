@@ -1,0 +1,27 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 120
+BreakBeforeBraces: Attach
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+UseTab: Never
+AccessModifierOffset: -4
+AlignAfterOpenBracket: Align
+AllowShortBlocksOnASingleLine: Empty
+BinPackParameters: false
+BinPackArguments: false
+
+SortIncludes: CaseInsensitive
+IncludeBlocks: Regroup
+IncludeCategories:
+  # C/C++ standard library headers (no dots or slashes)
+  - Regex: '^<[a-z_]+>'
+    Priority: 1
+  # External library headers (angle brackets with paths/extensions)
+  - Regex: '^<'
+    Priority: 2
+  # Project headers (quoted)
+  - Regex: '^"'
+    Priority: 3

@@ -5,6 +5,14 @@ on:
   pull_request:
 
 jobs:
+  format:
+    runs-on: ubuntu-latest
+    name: clang-format
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run clang-format
+        run: find src -name '*.cpp' -o -name '*.hpp' | xargs clang-format --dry-run --Werror
+
   build:
     strategy:
       fail-fast: false
