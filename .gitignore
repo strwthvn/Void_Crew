@@ -1,0 +1,57 @@
+# Build directories
+build/
+out/
+cmake-build-*/
+
+# CMake generated
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+CTestTestfile.cmake
+Makefile
+
+# Compiled objects
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dylib
+*.dll
+*.exe
+
+# Precompiled headers
+*.gch
+*.pch
+
+# Debug files
+*.dSYM/
+*.pdb
+*.ilk
+*.exp
+
+# IDE / Editor
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.sln.docstates
+*.swp
+*~
+
+# vcpkg installed packages
+vcpkg_installed/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# FlatBuffers generated
+*_generated.h
+
+# Tracy captures
+*.tracy
+
+# Logs
+*.log
