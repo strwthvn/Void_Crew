@@ -1,0 +1,30 @@
+{
+  "name": "void-crew",
+  "version-string": "0.0.1-dev",
+  "dependencies": [
+    "catch2",
+    "concurrentqueue",
+    "entt",
+    "eventpp",
+    "flatbuffers",
+    "fmt",
+    "glm",
+    "imgui",
+    "joltphysics",
+    "libcurl",
+    "lz4",
+    "miniaudio",
+    "nlohmann-json",
+    "opus",
+    "recastnavigation",
+    "sdl2",
+    "spdlog",
+    "stb",
+    "taskflow",
+    "tomlplusplus",
+    "tracy",
+    "vulkan-headers",
+    "vulkan-memory-allocator",
+    "xxhash"
+  ]
+}
