@@ -14,14 +14,16 @@ public:
     ~Server();
 
     Server(const Server &) = delete;
+    Server(Server &&) = delete;
     Server &operator=(const Server &) = delete;
+    Server &operator=(Server &&) = delete;
 
     void run();
     void shutdown();
 
-    bool isRunning() const;
-    entt::registry &registry();
-    const ServerConfig &config() const;
+    bool isRunning() const noexcept;
+    entt::registry &registry() noexcept;
+    const ServerConfig &config() const noexcept;
 
 private:
     ServerConfig m_config;

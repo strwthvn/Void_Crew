@@ -39,15 +39,15 @@ void Server::shutdown() {
     m_running.store(false, std::memory_order_release);
 }
 
-bool Server::isRunning() const {
+bool Server::isRunning() const noexcept {
     return m_running.load(std::memory_order_acquire);
 }
 
-entt::registry &Server::registry() {
+entt::registry &Server::registry() noexcept {
     return m_registry;
 }
 
-const ServerConfig &Server::config() const {
+const ServerConfig &Server::config() const noexcept {
     return m_config;
 }
 
