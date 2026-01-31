@@ -4,12 +4,12 @@
 #include <string_view>
 
 #include <entt/entt.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/epsilon.hpp>
 #include <spdlog/spdlog.h>
 
 struct Position {
-    float x;
-    float y;
-    float z;
+    glm::vec3 value;
 };
 
 int main() {
@@ -21,21 +21,31 @@ int main() {
     }
     spdlog::info("PASS: engineVersion() = \"{}\"", version);
 
-    // Verify EnTT registry: create entity, attach and read component
+    // Verify EnTT registry with glm::vec3 component
     entt::registry registry;
     auto entity = registry.create();
-    registry.emplace<Position>(entity, 1.0f, 2.0f, 3.0f);
+    registry.emplace<Position>(entity, glm::vec3{1.0f, 2.0f, 3.0f});
 
     auto* pos = registry.try_get<Position>(entity);
     if (pos == nullptr) {
         spdlog::error("Position component not found on entity");
         return EXIT_FAILURE;
     }
-    if (pos->x != 1.0f || pos->y != 2.0f || pos->z != 3.0f) {
+    glm::vec3 expected{1.0f, 2.0f, 3.0f};
+    if (!glm::all(glm::epsilonEqual(pos->value, expected, 1e-6f))) {
         spdlog::error("Position values mismatch");
         return EXIT_FAILURE;
     }
-    spdlog::info("PASS: EnTT registry create/emplace/try_get");
+    spdlog::info("PASS: EnTT + glm vec3 component");
+
+    // Verify glm operations
+    glm::vec3 a{3.0f, 0.0f, 4.0f};
+    float len = glm::length(a);
+    if (!glm::epsilonEqual(len, 5.0f, 1e-6f)) {
+        spdlog::error("glm::length mismatch: expected 5, got {}", len);
+        return EXIT_FAILURE;
+    }
+    spdlog::info("PASS: glm::length");
 
     // Verify spdlog formatted output
     spdlog::info("PASS: spdlog {}.{}.{}", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);
