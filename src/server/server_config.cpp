@@ -15,15 +15,15 @@ ServerConfig parseToml(const std::string &path) {
     ServerConfig cfg;
 
     if (auto server = tbl["server"].as_table()) {
-        cfg.name = server->get("name")->value_or(cfg.name);
-        cfg.port = static_cast<uint16_t>(server->get("port")->value_or(static_cast<int64_t>(cfg.port)));
+        cfg.name = (*server)["name"].value_or(cfg.name);
+        cfg.port = static_cast<uint16_t>((*server)["port"].value_or(static_cast<int64_t>(cfg.port)));
         cfg.maxPlayers =
-            static_cast<uint32_t>(server->get("max_players")->value_or(static_cast<int64_t>(cfg.maxPlayers)));
-        cfg.tickRate = static_cast<uint32_t>(server->get("tick_rate")->value_or(static_cast<int64_t>(cfg.tickRate)));
+            static_cast<uint32_t>((*server)["max_players"].value_or(static_cast<int64_t>(cfg.maxPlayers)));
+        cfg.tickRate = static_cast<uint32_t>((*server)["tick_rate"].value_or(static_cast<int64_t>(cfg.tickRate)));
     }
 
     if (auto logging = tbl["logging"].as_table()) {
-        cfg.logLevel = logging->get("level")->value_or(cfg.logLevel);
+        cfg.logLevel = (*logging)["level"].value_or(cfg.logLevel);
     }
 
     return cfg;
@@ -46,8 +46,8 @@ ServerConfig loadConfig(const CommandLineArgs &args) {
     }
 
     // CLI --port overrides config file
-    if (args.port != DEFAULT_PORT) {
-        cfg.port = args.port;
+    if (args.port.has_value()) {
+        cfg.port = *args.port;
     }
 
     return cfg;

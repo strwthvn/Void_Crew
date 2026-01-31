@@ -10,7 +10,7 @@ constexpr uint16_t DEFAULT_PORT = 27015;
 constexpr const char *DEFAULT_CONFIG_PATH = "server.toml";
 
 struct CommandLineArgs {
-    uint16_t port = DEFAULT_PORT;
+    std::optional<uint16_t> port;
     std::string configPath = DEFAULT_CONFIG_PATH;
 };
 
