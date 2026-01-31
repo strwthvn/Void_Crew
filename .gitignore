@@ -46,6 +46,7 @@ vcpkg_installed/
 # OS
 Thumbs.db
 .DS_Store
+nul
 
 # FlatBuffers generated
 *_generated.h
