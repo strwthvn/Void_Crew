@@ -1,7 +1,5 @@
 #include <cstdlib>
 
-#include <spdlog/spdlog.h>
-
 #include "command_line.hpp"
 #include "logging.hpp"
 #include "server.hpp"
@@ -17,7 +15,7 @@ int main(int argc, char *argv[]) {
         }
 
         void_crew::initLogging("info", "logs/server.log");
-        spdlog::info("Void Crew Dedicated Server {}", void_crew::engineVersion());
+        LOG_INFO("Void Crew Dedicated Server {}", void_crew::engineVersion());
         void_crew::server::installSignalHandlers();
 
         auto config = void_crew::server::loadConfig(*args);
@@ -26,13 +24,13 @@ int main(int argc, char *argv[]) {
         void_crew::server::Server server(std::move(config));
         server.run();
 
-        spdlog::info("Server shut down cleanly");
+        LOG_INFO("Server shut down cleanly");
         return EXIT_SUCCESS;
     } catch (const std::exception &e) {
-        spdlog::critical("Fatal error: {}", e.what());
+        LOG_CRITICAL("Fatal error: {}", e.what());
         return EXIT_FAILURE;
     } catch (...) {
-        spdlog::critical("Fatal error: unknown exception");
+        LOG_CRITICAL("Fatal error: unknown exception");
         return EXIT_FAILURE;
     }
 }

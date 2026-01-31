@@ -20,3 +20,8 @@ target_link_libraries(common PUBLIC
     glm::glm
     spdlog::spdlog
 )
+
+# TRACE in Debug/RelWithDebInfo, INFO in Release (compiles out TRACE/DEBUG)
+target_compile_definitions(common PUBLIC
+    SPDLOG_ACTIVE_LEVEL=$<IF:$<CONFIG:Release>,SPDLOG_LEVEL_INFO,SPDLOG_LEVEL_TRACE>
+)

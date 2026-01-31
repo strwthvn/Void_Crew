@@ -1,14 +1,13 @@
 #include "server.hpp"
 
-#include <spdlog/spdlog.h>
-
+#include "logging.hpp"
 #include "signal_handler.hpp"
 
 namespace void_crew::server {
 
 Server::Server(ServerConfig config) : m_config(std::move(config)) {
-    spdlog::info("Server '{}' initialized on port {}", m_config.name, m_config.port);
-    spdlog::info("Max players: {}, Tick rate: {} Hz", m_config.maxPlayers, m_config.tickRate);
+    TLOG_INFO("server", "Server '{}' initialized on port {}", m_config.name, m_config.port);
+    TLOG_INFO("server", "Max players: {}, Tick rate: {} Hz", m_config.maxPlayers, m_config.tickRate);
 }
 
 Server::~Server() {
@@ -19,7 +18,7 @@ Server::~Server() {
 
 void Server::run() {
     m_running.store(true, std::memory_order_release);
-    spdlog::info("Server started");
+    TLOG_INFO("server", "Server started");
 
     // TODO(#0): game loop (1.3)
     while (m_running.load(std::memory_order_acquire) && !wasSignalReceived()) {
@@ -29,13 +28,13 @@ void Server::run() {
     m_running.store(false, std::memory_order_release);
 
     if (wasSignalReceived()) {
-        spdlog::info("Received shutdown signal");
+        TLOG_INFO("server", "Received shutdown signal");
     }
-    spdlog::info("Server stopped");
+    TLOG_INFO("server", "Server stopped");
 }
 
 void Server::shutdown() {
-    spdlog::info("Server shutting down...");
+    TLOG_INFO("server", "Server shutting down...");
     m_running.store(false, std::memory_order_release);
 }
 

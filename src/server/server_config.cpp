@@ -3,8 +3,9 @@
 #include <filesystem>
 #include <stdexcept>
 
-#include <spdlog/spdlog.h>
 #include <toml++/toml.hpp>
+
+#include "logging.hpp"
 
 namespace void_crew::server {
 
@@ -35,14 +36,14 @@ ServerConfig loadConfig(const CommandLineArgs &args) {
     ServerConfig cfg;
 
     if (std::filesystem::exists(args.configPath)) {
-        spdlog::info("Loading config from '{}'", args.configPath);
+        TLOG_INFO("config", "Loading config from '{}'", args.configPath);
         try {
             cfg = parseToml(args.configPath);
         } catch (const toml::parse_error &e) {
             throw std::runtime_error(fmt::format("Failed to parse config '{}': {}", args.configPath, e.description()));
         }
     } else {
-        spdlog::warn("Config file '{}' not found, using defaults", args.configPath);
+        TLOG_WARN("config", "Config file '{}' not found, using defaults", args.configPath);
     }
 
     // CLI --port overrides config file
