@@ -10,10 +10,10 @@ namespace void_crew::server {
 /// Performance metrics for the game loop, updated every tick.
 struct TickMetrics {
     uint64_t totalTicks = 0;
-    double lastTickDuration = 0.0;     // seconds
-    double averageTickDuration = 0.0;  // exponential moving average, seconds
-    double maxTickDuration = 0.0;      // seconds, reset each logging interval
-    double load = 0.0;                 // avgTickDuration / dt * 100 (percentage)
+    double lastTickDuration = 0.0;    // seconds
+    double averageTickDuration = 0.0; // exponential moving average, seconds
+    double maxTickDuration = 0.0;     // seconds, reset each logging interval
+    double load = 0.0;                // avgTickDuration / dt * 100 (percentage)
 };
 
 /// Fixed-timestep game loop using the accumulator pattern.
@@ -40,13 +40,13 @@ public:
 
     uint64_t currentTick() const noexcept;
     float fixedDt() const noexcept;
-    const TickMetrics& metrics() const noexcept;
+    const TickMetrics &metrics() const noexcept;
 
 private:
     void logMetrics();
 
     uint32_t m_tickRate;
-    double m_dt;             // 1.0 / tickRate  (seconds, double for accumulator precision)
+    double m_dt; // 1.0 / tickRate  (seconds, double for accumulator precision)
     uint64_t m_currentTick = 0;
     TickMetrics m_metrics;
 

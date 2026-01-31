@@ -16,8 +16,7 @@ constexpr double EMA_ALPHA = 0.1;
 } // namespace
 
 GameLoop::GameLoop(uint32_t tickRate)
-    : m_tickRate(std::clamp(tickRate, MIN_TICK_RATE, MAX_TICK_RATE)),
-      m_dt(1.0 / static_cast<double>(m_tickRate)) {
+    : m_tickRate(std::clamp(tickRate, MIN_TICK_RATE, MAX_TICK_RATE)), m_dt(1.0 / static_cast<double>(m_tickRate)) {
     if (tickRate != m_tickRate) {
         TLOG_WARN("loop", "Tick rate {} clamped to {}", tickRate, m_tickRate);
     }
@@ -38,8 +37,7 @@ void GameLoop::run(std::function<bool()> shouldRun, std::function<void(float)> o
         // Death-spiral protection: clamp elapsed time so we don't try to
         // run an unbounded number of catch-up ticks after a long stall.
         if (elapsed > MAX_FRAME_TIME) {
-            TLOG_WARN("loop", "Frame time {:.3f}s exceeds limit, clamped to {:.3f}s",
-                      elapsed, MAX_FRAME_TIME);
+            TLOG_WARN("loop", "Frame time {:.3f}s exceeds limit, clamped to {:.3f}s", elapsed, MAX_FRAME_TIME);
             elapsed = MAX_FRAME_TIME;
         }
 
@@ -85,8 +83,7 @@ void GameLoop::run(std::function<bool()> shouldRun, std::function<void(float)> o
         // so we need to wait (dt - accumulator) before the next tick fires.
         double remainingSec = m_dt - accumulator;
         if (remainingSec > 0.001) {
-            std::this_thread::sleep_for(
-                std::chrono::duration<double>(remainingSec));
+            std::this_thread::sleep_for(std::chrono::duration<double>(remainingSec));
         }
     }
 
@@ -101,7 +98,7 @@ float GameLoop::fixedDt() const noexcept {
     return static_cast<float>(m_dt);
 }
 
-const TickMetrics& GameLoop::metrics() const noexcept {
+const TickMetrics &GameLoop::metrics() const noexcept {
     return m_metrics;
 }
 

@@ -5,9 +5,7 @@
 
 namespace void_crew::server {
 
-Server::Server(ServerConfig config)
-    : m_config(std::move(config)),
-      m_gameLoop(m_config.tickRate) {
+Server::Server(ServerConfig config) : m_config(std::move(config)), m_gameLoop(m_config.tickRate) {
     TLOG_INFO("server", "Server '{}' initialized on port {}", m_config.name, m_config.port);
     TLOG_INFO("server", "Max players: {}, Tick rate: {} Hz", m_config.maxPlayers, m_config.tickRate);
 }
@@ -22,11 +20,8 @@ void Server::run() {
     m_running.store(true, std::memory_order_release);
     TLOG_INFO("server", "Server started");
 
-    m_gameLoop.run(
-        [this]() {
-            return m_running.load(std::memory_order_acquire) && !wasSignalReceived();
-        },
-        [this](float dt) { tick(dt); });
+    m_gameLoop.run([this]() { return m_running.load(std::memory_order_acquire) && !wasSignalReceived(); },
+                   [this](float dt) { tick(dt); });
 
     m_running.store(false, std::memory_order_release);
 

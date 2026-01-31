@@ -14,8 +14,7 @@ namespace void_crew {
 // Must be called once, early in main(), before any log calls.
 // - level: one of "trace", "debug", "info", "warn", "error", "critical"
 // - logFile: path to the log file; parent directories are created if needed
-void initLogging(std::string_view level = "info",
-                 const std::filesystem::path& logFile = "logs/void_crew.log");
+void initLogging(std::string_view level = "info", const std::filesystem::path &logFile = "logs/void_crew.log");
 
 // Returns a logger tagged with the given subsystem name.
 // Creates it on first call for a given tag, sharing sinks with the root logger.
