@@ -18,8 +18,7 @@ ServerConfig parseToml(const std::string &path) {
     if (auto server = tbl["server"].as_table()) {
         cfg.name = (*server)["name"].value_or(cfg.name);
         cfg.port = static_cast<uint16_t>((*server)["port"].value_or(static_cast<int64_t>(cfg.port)));
-        cfg.maxPlayers =
-            static_cast<uint32_t>((*server)["max_players"].value_or(static_cast<int64_t>(cfg.maxPlayers)));
+        cfg.maxPlayers = static_cast<uint32_t>((*server)["max_players"].value_or(static_cast<int64_t>(cfg.maxPlayers)));
         cfg.tickRate = static_cast<uint32_t>((*server)["tick_rate"].value_or(static_cast<int64_t>(cfg.tickRate)));
     }
 
