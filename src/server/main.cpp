@@ -1,4 +1,5 @@
 #include "command_line.hpp"
+#include "server.hpp"
 #include "version.hpp"
 
 #include <cstdlib>
@@ -13,10 +14,9 @@ int main(int argc, char* argv[]) {
         }
 
         spdlog::info("Void Crew Dedicated Server {}", void_crew::engineVersion());
-        spdlog::info("Port: {}, Config: {}", args->port, args->configPath);
 
-        // TODO(#0): create Server instance (1.1)
-        // TODO(#0): run server main loop (1.3)
+        void_crew::server::Server server(std::move(*args));
+        server.run();
 
         spdlog::info("Server shut down cleanly");
         return EXIT_SUCCESS;
