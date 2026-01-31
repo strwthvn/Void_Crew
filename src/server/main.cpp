@@ -1,10 +1,8 @@
 #include "version.hpp"
 
-#include <cstdio>
+#include <spdlog/spdlog.h>
 
 int main() {
-    std::printf("Void Crew Server %.*s\n",
-        static_cast<int>(void_crew::engineVersion().size()),
-        void_crew::engineVersion().data());
+    spdlog::info("Void Crew Server {}", void_crew::engineVersion());
     return 0;
 }

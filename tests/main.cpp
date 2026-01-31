@@ -1,10 +1,10 @@
 #include "version.hpp"
 
-#include <cstdio>
 #include <cstdlib>
 #include <string_view>
 
 #include <entt/entt.hpp>
+#include <spdlog/spdlog.h>
 
 struct Position {
     float x;
@@ -16,11 +16,10 @@ int main() {
     // Verify engine version is not empty
     std::string_view version = void_crew::engineVersion();
     if (version.empty()) {
-        std::printf("FAIL: engineVersion() returned empty string\n");
+        spdlog::error("engineVersion() returned empty string");
         return EXIT_FAILURE;
     }
-    std::printf("PASS: engineVersion() = \"%.*s\"\n",
-        static_cast<int>(version.size()), version.data());
+    spdlog::info("PASS: engineVersion() = \"{}\"", version);
 
     // Verify EnTT registry: create entity, attach and read component
     entt::registry registry;
@@ -29,14 +28,17 @@ int main() {
 
     auto* pos = registry.try_get<Position>(entity);
     if (pos == nullptr) {
-        std::printf("FAIL: Position component not found on entity\n");
+        spdlog::error("Position component not found on entity");
         return EXIT_FAILURE;
     }
     if (pos->x != 1.0f || pos->y != 2.0f || pos->z != 3.0f) {
-        std::printf("FAIL: Position values mismatch\n");
+        spdlog::error("Position values mismatch");
         return EXIT_FAILURE;
     }
-    std::printf("PASS: EnTT registry create/emplace/try_get\n");
+    spdlog::info("PASS: EnTT registry create/emplace/try_get");
+
+    // Verify spdlog formatted output
+    spdlog::info("PASS: spdlog {}.{}.{}", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);
 
     return EXIT_SUCCESS;
 }
