@@ -1,5 +1,7 @@
 #include "server.hpp"
 
+#include "signal_handler.hpp"
+
 #include <spdlog/spdlog.h>
 
 namespace void_crew::server {
@@ -19,11 +21,15 @@ void Server::run() {
     spdlog::info("Server started");
 
     // TODO(#0): game loop (1.3)
-    while (m_running.load(std::memory_order_relaxed)) {
+    while (m_running.load(std::memory_order_relaxed) && !wasSignalReceived()) {
         break; // placeholder until game loop is implemented
     }
 
     m_running.store(false, std::memory_order_relaxed);
+
+    if (wasSignalReceived()) {
+        spdlog::info("Received shutdown signal");
+    }
     spdlog::info("Server stopped");
 }
 

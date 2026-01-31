@@ -1,5 +1,6 @@
 #include "command_line.hpp"
 #include "server.hpp"
+#include "signal_handler.hpp"
 #include "version.hpp"
 
 #include <cstdlib>
@@ -14,6 +15,7 @@ int main(int argc, char* argv[]) {
         }
 
         spdlog::info("Void Crew Dedicated Server {}", void_crew::engineVersion());
+        void_crew::server::installSignalHandlers();
 
         void_crew::server::Server server(std::move(*args));
         server.run();
