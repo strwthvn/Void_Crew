@@ -27,16 +27,13 @@ GameLoop::GameLoop(uint32_t tickRate)
 void GameLoop::run(std::function<bool()> shouldRun, std::function<void(float)> onTick) {
     TLOG_INFO("loop", "Game loop started at {} Hz", m_tickRate);
 
-    auto previousTime = Clock::now();
+    Timer frameTimer;
     double accumulator = 0.0;
     double timeSinceMetricsLog = 0.0;
     const auto fixedDtFloat = static_cast<float>(m_dt);
 
     while (shouldRun()) {
-        auto currentTime = Clock::now();
-        double elapsed =
-            std::chrono::duration<double>(currentTime - previousTime).count();
-        previousTime = currentTime;
+        double elapsed = frameTimer.restart();
 
         // Death-spiral protection: clamp elapsed time so we don't try to
         // run an unbounded number of catch-up ticks after a long stall.
@@ -53,13 +50,12 @@ void GameLoop::run(std::function<bool()> shouldRun, std::function<void(float)> o
         // Without this, a signal or shutdown() call during the inner loop
         // would only take effect after all accumulated ticks are drained.
         while (accumulator >= m_dt && shouldRun()) {
-            auto tickStart = Clock::now();
+            Timer tickTimer;
 
             onTick(fixedDtFloat);
             m_currentTick++;
 
-            double tickDuration =
-                std::chrono::duration<double>(Clock::now() - tickStart).count();
+            double tickDuration = tickTimer.elapsedSeconds();
 
             // Update metrics
             m_metrics.totalTicks = m_currentTick;

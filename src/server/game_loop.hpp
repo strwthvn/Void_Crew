@@ -1,8 +1,9 @@
 #pragma once
 
-#include <chrono>
 #include <cstdint>
 #include <functional>
+
+#include "timer.hpp"
 
 namespace void_crew::server {
 
@@ -29,8 +30,6 @@ struct TickMetrics {
 /// https://gafferongames.com/post/fix_your_timestep/
 class GameLoop {
 public:
-    using Clock = std::chrono::steady_clock;
-
     /// @param tickRate  Simulation ticks per second (clamped to [1, 300]).
     explicit GameLoop(uint32_t tickRate);
 

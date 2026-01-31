@@ -4,6 +4,7 @@ add_executable(tests
     main.cpp
     game_loop_tests.cpp
     server_tests.cpp
+    timer_tests.cpp
 )
 
 target_link_libraries(tests PRIVATE common server_lib Catch2::Catch2WithMain)

@@ -6,6 +6,7 @@ find_package(spdlog CONFIG REQUIRED)
 add_library(common STATIC
     logging.cpp
     logging.hpp
+    timer.hpp
     version.cpp
     version.hpp
 )
