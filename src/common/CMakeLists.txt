@@ -4,6 +4,8 @@ find_package(glm CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 
 add_library(common STATIC
+    logging.cpp
+    logging.hpp
     version.cpp
     version.hpp
 )

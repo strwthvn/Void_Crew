@@ -1,5 +1,8 @@
+#include "logging.hpp"
 #include "version.hpp"
 
+#include <filesystem>
+#include <fstream>
 #include <string>
 #include <string_view>
 
@@ -9,6 +12,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 
 struct Position {
     glm::vec3 value;
@@ -52,4 +56,55 @@ TEST_CASE("FlatBuffers build/read round-trip", "[serialization]") {
 TEST_CASE("spdlog formats without throwing", "[logging]") {
     REQUIRE_NOTHROW(spdlog::info("Catch2 test: spdlog {}.{}.{}",
         SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH));
+}
+
+TEST_CASE("initLogging creates log file and writes to it", "[logging]") {
+    auto logDir = std::filesystem::temp_directory_path() / "void_crew_test_write";
+    auto logFile = logDir / "test.log";
+    std::error_code ec;
+    std::filesystem::remove_all(logDir, ec);
+
+    REQUIRE_NOTHROW(void_crew::initLogging("debug", logFile));
+    spdlog::info("logging init test");
+    spdlog::default_logger()->flush();
+
+    REQUIRE(std::filesystem::exists(logFile));
+
+    // Read file content while sink is still open (shared access on Windows)
+    std::ifstream f(logFile);
+    std::string contents((std::istreambuf_iterator<char>(f)),
+                         std::istreambuf_iterator<char>());
+    f.close();
+    REQUIRE(contents.find("logging init test") != std::string::npos);
+
+    // Restore a plain default logger so subsequent tests can still log
+    spdlog::drop_all();
+    spdlog::set_default_logger(
+        std::make_shared<spdlog::logger>("default",
+            std::make_shared<spdlog::sinks::stdout_color_sink_mt>()));
+    // Temp files left for OS cleanup
+}
+
+TEST_CASE("initLogging respects level filter", "[logging]") {
+    auto logDir = std::filesystem::temp_directory_path() / "void_crew_test_level";
+    auto logFile = logDir / "level.log";
+    std::error_code ec;
+    std::filesystem::remove_all(logDir, ec);
+
+    void_crew::initLogging("warn", logFile);
+    spdlog::info("should be filtered");
+    spdlog::warn("should appear");
+    spdlog::default_logger()->flush();
+
+    std::ifstream f(logFile);
+    std::string contents((std::istreambuf_iterator<char>(f)),
+                         std::istreambuf_iterator<char>());
+    f.close();
+    REQUIRE(contents.find("should be filtered") == std::string::npos);
+    REQUIRE(contents.find("should appear") != std::string::npos);
+
+    spdlog::drop_all();
+    spdlog::set_default_logger(
+        std::make_shared<spdlog::logger>("default",
+            std::make_shared<spdlog::sinks::stdout_color_sink_mt>()));
 }
