@@ -2,6 +2,7 @@ find_package(Catch2 CONFIG REQUIRED)
 
 add_executable(tests
     main.cpp
+    game_loop_tests.cpp
     server_tests.cpp
 )
 

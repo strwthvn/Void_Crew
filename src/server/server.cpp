@@ -5,7 +5,9 @@
 
 namespace void_crew::server {
 
-Server::Server(ServerConfig config) : m_config(std::move(config)) {
+Server::Server(ServerConfig config)
+    : m_config(std::move(config)),
+      m_gameLoop(m_config.tickRate) {
     TLOG_INFO("server", "Server '{}' initialized on port {}", m_config.name, m_config.port);
     TLOG_INFO("server", "Max players: {}, Tick rate: {} Hz", m_config.maxPlayers, m_config.tickRate);
 }
@@ -20,10 +22,11 @@ void Server::run() {
     m_running.store(true, std::memory_order_release);
     TLOG_INFO("server", "Server started");
 
-    // TODO(#0): game loop (1.3)
-    while (m_running.load(std::memory_order_acquire) && !wasSignalReceived()) {
-        break; // placeholder until game loop is implemented
-    }
+    m_gameLoop.run(
+        [this]() {
+            return m_running.load(std::memory_order_acquire) && !wasSignalReceived();
+        },
+        [this](float dt) { tick(dt); });
 
     m_running.store(false, std::memory_order_release);
 
@@ -38,6 +41,11 @@ void Server::shutdown() {
     m_running.store(false, std::memory_order_release);
 }
 
+void Server::tick(float dt) {
+    // TODO(#0): update ECS systems (1.5)
+    static_cast<void>(dt);
+}
+
 bool Server::isRunning() const noexcept {
     return m_running.load(std::memory_order_acquire);
 }
@@ -48,6 +56,10 @@ entt::registry &Server::registry() noexcept {
 
 const ServerConfig &Server::config() const noexcept {
     return m_config;
+}
+
+const GameLoop &Server::gameLoop() const noexcept {
+    return m_gameLoop;
 }
 
 } // namespace void_crew::server

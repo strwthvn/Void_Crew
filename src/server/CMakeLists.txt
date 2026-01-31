@@ -2,6 +2,7 @@ find_package(tomlplusplus CONFIG REQUIRED)
 
 add_library(server_lib STATIC
     command_line.cpp
+    game_loop.cpp
     server.cpp
     server_config.cpp
     signal_handler.cpp
