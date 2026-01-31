@@ -4,6 +4,7 @@
 #include <string_view>
 
 #include <entt/entt.hpp>
+#include <flatbuffers/flatbuffers.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/epsilon.hpp>
 #include <spdlog/spdlog.h>
@@ -46,6 +47,23 @@ int main() {
         return EXIT_FAILURE;
     }
     spdlog::info("PASS: glm::length");
+
+    // Verify FlatBuffers: build a buffer with a string, read it back
+    flatbuffers::FlatBufferBuilder builder(256);
+    auto nameOffset = builder.CreateString("VoidCrew");
+    builder.Finish(nameOffset);
+    auto* buf = builder.GetBufferPointer();
+    auto size = builder.GetSize();
+    if (buf == nullptr || size == 0) {
+        spdlog::error("FlatBufferBuilder produced empty buffer");
+        return EXIT_FAILURE;
+    }
+    auto* str = flatbuffers::GetRoot<flatbuffers::String>(buf);
+    if (str->str() != std::string("VoidCrew")) {
+        spdlog::error("FlatBuffers round-trip mismatch");
+        return EXIT_FAILURE;
+    }
+    spdlog::info("PASS: FlatBuffers build/read round-trip");
 
     // Verify spdlog formatted output
     spdlog::info("PASS: spdlog {}.{}.{}", SPDLOG_VER_MAJOR, SPDLOG_VER_MINOR, SPDLOG_VER_PATCH);
