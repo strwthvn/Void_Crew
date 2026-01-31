@@ -5,7 +5,6 @@ on:
   pull_request:
 
 env:
-  VCPKG_DEFAULT_TRIPLET: x64-linux
   VCPKG_TOOLCHAIN: ${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
 jobs:
@@ -22,6 +21,12 @@ jobs:
     name: clang-tidy
     steps:
       - uses: actions/checkout@v4
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libx11-dev libxrandr-dev libxinerama-dev \
+            libxcursor-dev libxi-dev libxext-dev libxfixes-dev libgl1-mesa-dev \
+            libwayland-dev libxkbcommon-dev libasound2-dev libpulse-dev
       - name: Bootstrap vcpkg
         run: |
           git clone --depth 1 https://github.com/microsoft/vcpkg.git
@@ -61,6 +66,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install system dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libx11-dev libxrandr-dev libxinerama-dev \
+            libxcursor-dev libxi-dev libxext-dev libxfixes-dev libgl1-mesa-dev \
+            libwayland-dev libxkbcommon-dev libasound2-dev libpulse-dev
+
       - name: Bootstrap vcpkg
         shell: bash
         run: |
@@ -94,6 +107,13 @@ jobs:
     name: sanitizers
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pkg-config libx11-dev libxrandr-dev libxinerama-dev \
+            libxcursor-dev libxi-dev libxext-dev libxfixes-dev libgl1-mesa-dev \
+            libwayland-dev libxkbcommon-dev libasound2-dev libpulse-dev
 
       - name: Bootstrap vcpkg
         run: |
