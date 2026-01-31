@@ -7,7 +7,7 @@
 namespace void_crew::server {
 
 constexpr uint16_t DEFAULT_PORT = 27015;
-constexpr const char* DEFAULT_CONFIG_PATH = "server.toml";
+constexpr const char *DEFAULT_CONFIG_PATH = "server.toml";
 
 struct CommandLineArgs {
     uint16_t port = DEFAULT_PORT;
@@ -17,6 +17,6 @@ struct CommandLineArgs {
 // Parses argc/argv into CommandLineArgs.
 // Returns nullopt when the program should exit immediately (--help, --version).
 // Throws std::runtime_error on invalid arguments.
-std::optional<CommandLineArgs> parseCommandLine(int argc, char* argv[]);
+std::optional<CommandLineArgs> parseCommandLine(int argc, char *argv[]);
 
 } // namespace void_crew::server

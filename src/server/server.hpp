@@ -1,10 +1,10 @@
 #pragma once
 
-#include "command_line.hpp"
-
 #include <atomic>
 
 #include <entt/entt.hpp>
+
+#include "command_line.hpp"
 
 namespace void_crew::server {
 
@@ -13,15 +13,15 @@ public:
     explicit Server(CommandLineArgs args);
     ~Server();
 
-    Server(const Server&) = delete;
-    Server& operator=(const Server&) = delete;
+    Server(const Server &) = delete;
+    Server &operator=(const Server &) = delete;
 
     void run();
     void shutdown();
 
     bool isRunning() const;
-    entt::registry& registry();
-    const CommandLineArgs& args() const;
+    entt::registry &registry();
+    const CommandLineArgs &args() const;
 
 private:
     CommandLineArgs m_args;

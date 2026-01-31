@@ -1,8 +1,8 @@
 #include "server.hpp"
 
-#include "signal_handler.hpp"
-
 #include <spdlog/spdlog.h>
+
+#include "signal_handler.hpp"
 
 namespace void_crew::server {
 
@@ -42,11 +42,11 @@ bool Server::isRunning() const {
     return m_running.load(std::memory_order_relaxed);
 }
 
-entt::registry& Server::registry() {
+entt::registry &Server::registry() {
     return m_registry;
 }
 
-const CommandLineArgs& Server::args() const {
+const CommandLineArgs &Server::args() const {
     return m_args;
 }
 

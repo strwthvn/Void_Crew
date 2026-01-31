@@ -1,7 +1,5 @@
 #include "command_line.hpp"
 
-#include "version.hpp"
-
 #include <charconv>
 #include <stdexcept>
 #include <string>
@@ -9,22 +7,23 @@
 
 #include <fmt/format.h>
 
+#include "version.hpp"
+
 namespace void_crew::server {
 
 namespace {
 
 void printUsage(std::string_view programName) {
-    fmt::print(
-        "Usage: {} [options]\n"
-        "\n"
-        "Options:\n"
-        "  -p, --port <port>      Server port (default: {})\n"
-        "  -c, --config <path>    Config file path (default: {})\n"
-        "  -h, --help             Show this help message\n"
-        "  -v, --version          Show version\n",
-        programName,
-        DEFAULT_PORT,
-        DEFAULT_CONFIG_PATH);
+    fmt::print("Usage: {} [options]\n"
+               "\n"
+               "Options:\n"
+               "  -p, --port <port>      Server port (default: {})\n"
+               "  -c, --config <path>    Config file path (default: {})\n"
+               "  -h, --help             Show this help message\n"
+               "  -v, --version          Show version\n",
+               programName,
+               DEFAULT_PORT,
+               DEFAULT_CONFIG_PATH);
 }
 
 void printVersion() {
@@ -45,7 +44,7 @@ uint16_t parsePort(std::string_view value) {
 
 } // namespace
 
-std::optional<CommandLineArgs> parseCommandLine(int argc, char* argv[]) {
+std::optional<CommandLineArgs> parseCommandLine(int argc, char *argv[]) {
     CommandLineArgs args;
 
     for (int i = 1; i < argc; ++i) {

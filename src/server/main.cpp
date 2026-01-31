@@ -1,13 +1,13 @@
+#include <cstdlib>
+
+#include <spdlog/spdlog.h>
+
 #include "command_line.hpp"
 #include "server.hpp"
 #include "signal_handler.hpp"
 #include "version.hpp"
 
-#include <cstdlib>
-
-#include <spdlog/spdlog.h>
-
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
     try {
         auto args = void_crew::server::parseCommandLine(argc, argv);
         if (!args) {
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
 
         spdlog::info("Server shut down cleanly");
         return EXIT_SUCCESS;
-    } catch (const std::exception& e) {
+    } catch (const std::exception &e) {
         spdlog::critical("Fatal error: {}", e.what());
         return EXIT_FAILURE;
     } catch (...) {
