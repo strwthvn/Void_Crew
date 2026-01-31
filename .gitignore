@@ -56,3 +56,6 @@ nul
 
 # Logs
 *.log
+
+# Runtime config (example is tracked)
+server.toml

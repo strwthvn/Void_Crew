@@ -4,6 +4,7 @@
 
 #include "command_line.hpp"
 #include "server.hpp"
+#include "server_config.hpp"
 #include "signal_handler.hpp"
 #include "version.hpp"
 
@@ -17,7 +18,8 @@ int main(int argc, char *argv[]) {
         spdlog::info("Void Crew Dedicated Server {}", void_crew::engineVersion());
         void_crew::server::installSignalHandlers();
 
-        void_crew::server::Server server(std::move(*args));
+        auto config = void_crew::server::loadConfig(*args);
+        void_crew::server::Server server(std::move(config));
         server.run();
 
         spdlog::info("Server shut down cleanly");

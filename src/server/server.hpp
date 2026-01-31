@@ -4,13 +4,13 @@
 
 #include <entt/entt.hpp>
 
-#include "command_line.hpp"
+#include "server_config.hpp"
 
 namespace void_crew::server {
 
 class Server {
 public:
-    explicit Server(CommandLineArgs args);
+    explicit Server(ServerConfig config);
     ~Server();
 
     Server(const Server &) = delete;
@@ -21,10 +21,10 @@ public:
 
     bool isRunning() const;
     entt::registry &registry();
-    const CommandLineArgs &args() const;
+    const ServerConfig &config() const;
 
 private:
-    CommandLineArgs m_args;
+    ServerConfig m_config;
     std::atomic<bool> m_running{false};
     entt::registry m_registry;
 };

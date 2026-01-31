@@ -6,8 +6,9 @@
 
 namespace void_crew::server {
 
-Server::Server(CommandLineArgs args) : m_args(std::move(args)) {
-    spdlog::info("Server initialized on port {}", m_args.port);
+Server::Server(ServerConfig config) : m_config(std::move(config)) {
+    spdlog::info("Server '{}' initialized on port {}", m_config.name, m_config.port);
+    spdlog::info("Max players: {}, Tick rate: {} Hz", m_config.maxPlayers, m_config.tickRate);
 }
 
 Server::~Server() {
@@ -46,8 +47,8 @@ entt::registry &Server::registry() {
     return m_registry;
 }
 
-const CommandLineArgs &Server::args() const {
-    return m_args;
+const ServerConfig &Server::config() const {
+    return m_config;
 }
 
 } // namespace void_crew::server
